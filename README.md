@@ -2,14 +2,17 @@
 Testchain Client
 </h1>
 
-[![GitHub License][license]][license-url]
-[![NPM][npm]][npm-url]
+[![GitHub License][license]][license-url] [![NPM][npm]][npm-url]
 
 ## Installation
 
 #### Staxx
 
-The client is to be used along with the [staxx](https://github.com/makerdao/staxx) which is a docker container containing all testchain functionality. Requires [docker](https://docs.docker.com/install/#server) and [docker-compose](https://docs.docker.com/compose/install/)
+The client is to be used along with the
+[staxx](https://github.com/makerdao/staxx) which is a docker container
+containing all testchain functionality. Requires
+[docker](https://docs.docker.com/install/#server) and
+[docker-compose](https://docs.docker.com/compose/install/)
 
 ```bash
 git clone https://github.com/makerdao/staxx.git
@@ -18,9 +21,13 @@ make docker-deps      # will download required docker images
 make run-dev          # will take a minute or two
 ```
 
-The data folder which docker will work out of is `/tmp` which will store chain and snapshot data under `/tmp/chains` and `/tmp/snapshots` respectively.
+The data folder which docker will work out of is `/tmp` which will store chain
+and snapshot data under `/tmp/chains` and `/tmp/snapshots` respectively.
 
-**NOTE** - The backendgateway takes approximately 5 minutes to download and organise all maker contracts from their various github repositories. By observing the undetached process of the `docker-compose up` command, it will be evident to the user when they are loaded.
+**NOTE** - The backendgateway takes approximately 5 minutes to download and
+organise all maker contracts from their various github repositories. By
+observing the undetached process of the `docker-compose up` command, it will be
+evident to the user when they are loaded.
 
 #### Testchain-client
 
@@ -32,7 +39,8 @@ cd ./testchain-client
 yarn install
 ```
 
-To build the project, simply run `yarn build`, or to build on file changes, `yarn build:watch`.
+To build the project, simply run `yarn build`, or to build on file changes,
+`yarn build:watch`.
 
 If you want to install the library directly from npm:
 
@@ -67,8 +75,8 @@ a websocket endpoint for performing chain functions and listening to system
 events. These events are declared as constants in the `Event` import.
 
 The user must use the `init()` function on the client in order to setup the
-endpoint connections correctly. It also automatically opens the `'api'` channel on the
-websocket connection.
+endpoint connections correctly. It also automatically opens the `'api'` channel
+on the websocket connection.
 
 ### REST API
 
@@ -81,9 +89,9 @@ connection. All functions are asynchronous.
 - `listAllSnapshots(chainType)` - returns a list of all snapshots for each
   chaintype, `ganache` or `geth`
 
-- `getChain(id)` - finds the chain with id and returns it's details
-  including it's passed configuration data, it's account information and other
-  chain information.
+- `getChain(id)` - finds the chain with id and returns it's details including
+  it's passed configuration data, it's account information and other chain
+  information.
 
 - `downloadSnapshotUrl(id)` - returns the download snapshot url endpoint.
 
@@ -102,7 +110,9 @@ await client.api.getChain(id);
 
 ### WEBSOCKET API
 
-This section lists the chain functions the client provides to interact with the websocket api. This is done over a websocket connection and we will examine in the next section how to intercept and monitor events coming from them.
+This section lists the chain functions the client provides to interact with the
+websocket api. This is done over a websocket connection and we will examine in
+the next section how to intercept and monitor events coming from them.
 
 As previously mentioned, when the `client` is initialised, it automatically
 opens the `'api'` channel. We use this channel to create our chains instances by
@@ -176,7 +186,10 @@ client.restart(id);
 client.takeSnapshot(id, description);
 ```
 
-Taking a snapshot will stop the chain; if the chain was created with the config option `clean_on_stop: true`, the chain will be removed when stopped. Therefore, `takeSnapshot` can only be used with chains that have been created with `clean_on_stop: false`.
+Taking a snapshot will stop the chain; if the chain was created with the config
+option `clean_on_stop: true`, the chain will be removed when stopped. Therefore,
+`takeSnapshot` can only be used with chains that have been created with
+`clean_on_stop: false`.
 
 **To restore a snapshot of a previous chain state:**
 
@@ -184,9 +197,9 @@ Taking a snapshot will stop the chain; if the chain was created with the config 
 client.restoreSnapshot(id, snapshotId);
 ```
 
-The `snapshotId` parameter refers to the id of the snapshot we wish to restore. If
-the chain which initially created the snapshot no longer exists, this will create
-a new chain instance using the snapshot.
+The `snapshotId` parameter refers to the id of the snapshot we wish to restore.
+If the chain which initially created the snapshot no longer exists, this will
+create a new chain instance using the snapshot.
 
 **To remove a chain instance permanently:**
 
@@ -198,8 +211,9 @@ This returns a promise and will stop a chain instance first before deleting it
 
 ### Events
 
-As noted in the import of the `client`, we also imported the Event object.
-This lists all events which can be listened to after performing websocket api functions.
+As noted in the import of the `client`, we also imported the Event object. This
+lists all events which can be listened to after performing websocket api
+functions.
 
 The source file for all of these events is located under
 `src/core/constants.js`. Many of these constants refer to the same string event
@@ -208,8 +222,8 @@ but by abstracting them to be more human-readable, gives better clarity.
 The client uses the
 [zen-observable](https://www.npmjs.com/package/zen-observable) library to
 transform all websocket data into an `observable` object. An observable object
-is an asynchronous data stream and can be subscribed to at any time. We
-use this object and the event constants to observe the websocket channel's behaviour and
+is an asynchronous data stream and can be subscribed to at any time. We use this
+object and the event constants to observe the websocket channel's behaviour and
 extract information as it comes down this stream.
 
 **`stream()`\***
@@ -231,17 +245,19 @@ obs.unsubscribe();
 ```
 
 In the above example, the Observable is assigned to our `chainStream` constant.
-`subscribe()` takes a callback function as an argument and is executed on an effective
-infinite loop for each incoming event fired from the backend on each channel.
-This callback is where all incoming data is passed and where a user should expect
-to find the chain events and returning data. The client has bootstrapped the
-value `eventName` to make it easier for the user to specify a target event.
+`subscribe()` takes a callback function as an argument and is executed on an
+effective infinite loop for each incoming event fired from the backend on each
+channel. This callback is where all incoming data is passed and where a user
+should expect to find the chain events and returning data. The client has
+bootstrapped the value `eventName` to make it easier for the user to specify a
+target event.
 
 **`once()`**
 
 The `once()` function builds around this subscription model and wraps a promise
 based on the next incoming event, returning the payload. This is especially
-useful around functions like `create()` and `takeSnapshot()` which return data after being executed.
+useful around functions like `create()` and `takeSnapshot()` which return data
+after being executed.
 
 ```javascript
 client.create(options);
