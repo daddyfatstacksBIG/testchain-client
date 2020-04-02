@@ -1,11 +1,11 @@
 import Client from '../src/Client';
 import Api from '../src/core/Api';
-import {ChannelName} from '../src/core/constants';
+import { ChannelName } from '../src/core/constants';
 import SocketHandler from '../src/core/SocketHandler';
 
-import {setupClient} from './helpers';
+import { setupClient } from './helpers';
 
-const {API} = ChannelName;
+const { API } = ChannelName;
 
 let client;
 
@@ -26,13 +26,13 @@ beforeAll(async () => {
 
 describe('Basic testchain Misc functionality', () => {
   test('List of all available stack configs', async () => {
-    const {data : data} = await client.api.listStacksConfigs();
+    const { data: data } = await client.api.listStacksConfigs();
 
     expect(typeof data).toBe('object');
   });
 
   test('Reload available stacks config', async () => {
-    const {errors : errors} = await client.api.reloadStackConfigs();
+    const { errors: errors } = await client.api.reloadStackConfigs();
 
     expect(Array.isArray(errors)).toBe(true);
     expect(errors.length).toBe(0);

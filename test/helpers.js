@@ -5,11 +5,11 @@ import Client from '../src/Client';
 
 export async function setupTestMakerInstance(testchainId, url) {
   const makerConfig = {
-    plugins : [
+    plugins: [
       // governancePlugin,
-      [ configPlugin, {testchainId : testchainId, url : url} ]
+      [configPlugin, { testchainId: testchainId, url: url }]
     ],
-    log : false
+    log: false
   };
 
   const maker = await Maker.create('http', makerConfig);
@@ -19,11 +19,11 @@ export async function setupTestMakerInstance(testchainId, url) {
 
 export function setupClient() {
   const testchainUrl = process.env.TESTCHAIN_URL
-                           ? `http://${process.env.TESTCHAIN_URL}`
-                           : 'http://127.0.0.1:4000';
+    ? `http://${process.env.TESTCHAIN_URL}`
+    : 'http://127.0.0.1:4000';
   const websocketUrl = process.env.TESTCHAIN_URL
-                           ? `ws://${process.env.TESTCHAIN_URL}/socket`
-                           : 'ws://127.0.0.1:4000/socket';
+    ? `ws://${process.env.TESTCHAIN_URL}/socket`
+    : 'ws://127.0.0.1:4000/socket';
 
   return new Client(testchainUrl, websocketUrl);
 }
@@ -40,7 +40,7 @@ export function createDescription(name, chainType) {
 export function randomString(length) {
   var result = '';
   var characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
