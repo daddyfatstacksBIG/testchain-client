@@ -2,7 +2,7 @@
 set -euo pipefail
 
 data=$(
-cat <<EOM
+  cat <<EOM
 {
     "status": "$1",
     "job": "$CIRCLE_JOB",
